@@ -23,34 +23,52 @@ class ReactList extends React.Component {
   }
 
   componentDidMount () {
-    const { data } = this.props;
+    const { data, cls } = this.props;
 
-    this.setState({data: data});
+    this.setState({
+      data: data,
+      kls: cls
+    });
   }
 
   /**
-   * [addCls description]
-   * @param {[type]} cls    [description]
-   * @param {[type]} prefix [description]
-   * @param {[type]} suffix [description]
+   * Adds a CSS class (or classes) to this Component's rendered element.
+   * 
+   * @param {String} cls The css class to add the list.
+   * @param {String} prefix The prefix to add to cls. Before the cls. prefix+cls.
+   * @param {String} suffix The suffix to add to cls. After the cls. cls+suffix.
    */
-  addCls (cls = void 0, prefix = void 0, suffix = void 0) {
+  addCls (cls = void 0, prefix = '', suffix = '') {
     const me = this;
+    const oldCls = me.getCls();
+    let newCls = (oldCls) ? oldCls.split(' ') : [];
+    let ln;
+    let cache;
 
-    if(typeof cls != 'string' || typeof prefix != 'string' || typeof suffix != 'string') {
-      console.warn(`Invalid ${cls} ${prefix} ${suffix} must be a string`);
-      return false;
+    if(typeof cls === 'string') {
+      cls = [cls];
     }
 
-    const kls = `${me.refs.ReactList.className} ${prefix}${cls}${suffix}`;
+    ln = cls.length;
 
-    me.refs.ReactList.className = kls;
+    if(!newCls.length && prefix === '' && suffix === '') {
+      newCls = cls;
+    } else {
+      for(let i = 0; i < ln; ++i) {
+        cache = `${prefix}${cls[i]}${suffix}`;
+        if(newCls.indexOf(cache) === -1) {
+          newCls.push(cache);
+        }
+      }
+    }
+
+    me.setCls(newCls.join(' '));
   }
 
   /**
-   * [getAt description]
-   * @param  {Number} index [description]
-   * @return {[type]}       [description]
+   * Return the data at the given index from the data.
+   * @param  {Number} index The index to be returned.
+   * @return {Object} object The data object.
    */
   getAt (index = 0) {
     if(typeof index != 'number') {
@@ -62,71 +80,70 @@ class ReactList extends React.Component {
   }
 
   /**
-   * [getCls description]
-   * @return {[type]} [description]
+   * Return all class.
+   * @return {String} classes Return the classes applied to the list.
    */
   getCls () {
     if(this.props.cls === null || this.props.cls.length === 0) {
       return `list`;
     } else {
-      return `list ${this.props.cls}`;
+      return this.state.kls;
     }
   }
 
   /**
-   * [getData description]
-   * @return {[type]} [description]
+   * getData return the data list itself.
+   * @return {Array} data Array data given to the list component.
    */
   getData () {
     return this.props.data;
   }
 
   /**
-   * [getItemAt description]
-   * @param  {Number} index [description]
-   * @return {[type]}       [description]
+   * Returns an item at the specified index.
+   * @param  {Number} index Index of the item.
+   * @return {Object} object The data object item at the specified index.
    */
   getItemAt (index = 0) {
     return this.refs.ReactList.children[index];
   }
 
   /**
-   * [getItemCls description]
-   * @return {[type]} [description]
+   * Returns the value of itemCls.
+   * @return {String} itemCls
    */
   getItemCls () {
     return this.props.itemCls;
   }
 
   /**
-   * [getItems description]
-   * @return {[type]} [description]
+   * Returns the children object from the refs.ReactList.
+   * @return {Array/Object}
    */
   getItems () {
     return this.refs.ReactList.children;
   }
 
   /**
-   * [getHeight description]
-   * @return {[type]} [description]
+   * Returns the value of height list.
+   * @return {Number}
    */
   getHeight () {
     return this.refs.ReactList.offsetHeight;
   }
 
   /**
-   * [getWidth description]
-   * @return {[type]} [description]
+   * Returns the value of width list.
+   * @return {Number}
    */
   getWidth () {
     return this.refs.ReactList.offsetWidth;
   }
 
   /**
-   * [insert description]
-   * @param  {Number} index [description]
-   * @param  {Object} item  [description]
-   * @return {[type]}       [description]
+   * Adds a child Component at the given index. For example, here's how we can add a new item, making it the first child Component of this List.
+   * @param  {Number} index The index to insert the Component at.
+   * @param  {Object} item The Component to insert.
    */
   insert (index = 0, item = {}) {
     const me = this;
@@ -143,13 +160,12 @@ class ReactList extends React.Component {
   }
 
   /**
-   * [onItemTap description]
-   * @param  {[type]} dataItem   [description]
-   * @param  {[type]} index      [description]
-   * @param  {[type]} touchEvent [description]
-   * @param  {[type]} reactId    [description]
-   * @param  {[type]} e          [description]
-   * @return {[type]}            [description]
+   * Fires whenever an item is tapped.
+   * @param  {Object} dataItem The object data of the item tapped.
+   * @param  {Number} index The index of the item tapped.
+   * @param  {Object} touchEvent The React event Object.
+   * @param  {String} reactId The React id of the item.
+   * @param  {Object} e The native event object.
    */
   onItemTap (dataItem, index, touchEvent, reactId, e) {
     this.setState({focused: index});
@@ -171,20 +187,14 @@ class ReactList extends React.Component {
 
   /**
    * [removeAll description]
-   * @param  {Boolean} destroy    [description]
-   * @param  {Boolean} everything [description]
-   * @return {[type]}             [description]
    */
-  removeAll (destroy = true, everything = true) {
-    this.setState({saveData: this.state.data});
-    // TO DO: find if it is a ref of item of really data to be destroyed
+  removeAll () {
     this.setState({data: []});
   }
 
   /**
-   * [removeAt description]
-   * @param  {Number} index [description]
-   * @return {[type]}       [description]
+   * Removes the Component at the specified index.
+   * @param  {Number} index The index of the Component to remove.
    */
   removeAt (index = 0) {
     if(typeof index != 'number') {
@@ -200,32 +210,51 @@ class ReactList extends React.Component {
   }
 
   /**
-   * [removeCls description]
-   * @param  {[type]} cls    [description]
-   * @param  {[type]} prefix [description]
-   * @param  {[type]} suffix [description]
-   * @return {[type]}        [description]
+   * Removes the given CSS class(es) from this Component's rendered element.
+   * @param  {String} cls The class(es) to remove.
+   * @param  {String} prefix Optional prefix to prepend before each class.
+   * @param  {String} suffix Optional suffix to append to each class.
    */
-  removeCls (cls, prefix, suffix) {
-    // remove a specific class
+  removeCls (cls = void 0, prefix = '', suffix = '') {
+    let oldCls = this.getCls(),
+        newCls = (oldCls) ? oldCls.split(' ') : [],
+        ln, i;
+
+      if (typeof cls == 'string') {
+        const index = newCls.indexOf(prefix + cls + suffix);
+        newCls = newCls.splice(index, 1);
+      } else {
+        ln = cls.length;
+        for (i = 0; i < ln; i++) {
+          newCls = newCls.splice(i, 1);
+        }
+      }
+
+      this.setCls(newCls);
   }
 
   /**
-   * [setCls description]
-   * @param {[type]} cls [description]
+   * Sets the value of cls.
+   * @param {String} cls The new value.
    */
-  setCls (cls = void 0) {
+  setCls (cls = '') {
+    const me = this;
+
     if(cls === void 0) {
       console.log('cls must have be a string value');
       return false;
     }
 
-    this.refs.ReactList.className = cls;
+    me.setState({
+      kls: cls
+    });
+
+    me.refs.ReactList.className = me.state.kls;
   }
 
   /**
-   * [setData description]
-   * @param {[type]} data [description]
+   * Sets the value of data.
+   * @param {Array/Object} data The new value.
    */
   setData (data = []) {
     const me = this;
@@ -236,8 +265,8 @@ class ReactList extends React.Component {
   }
 
   /**
-   * [setHeight description]
-   * @param {[type]} height [description]
+   * Sets the value of height.
+   * @param {Number} height The new value.
    */
   setHeight (height) {
     if(typeof height != 'number') {
@@ -247,14 +276,6 @@ class ReactList extends React.Component {
 
     const heightToString = `${height}px`;
     this.refs.ReactList.style.height = heightToString;
-  }
-
-  /**
-   * [setItems description]
-   * @param {[type]} items [description]
-   */
-  setItems (items) {
-
   }
 
   render () {
@@ -291,12 +312,7 @@ ReactList.defaultProps = {
     itemConfig: {
       height: 60,
       borderBottom: '1px solid black'
-    },
-    items: [],
-    padding: null,
-    margin: null,
-    pressedCls: null,
-    itemTpl: ''
+    }
 };
 
 ReactList.propTypes = {
@@ -311,23 +327,8 @@ ReactList.propTypes = {
     React.PropTypes.string,
     React.PropTypes.number
   ]),
-  inline: React.PropTypes.array,
   itemCls: React.PropTypes.string,
-  itemConfig: React.PropTypes.object,
-  items: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.object
-  ]),
-  padding: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number
-  ]),
-  margin: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number
-  ]),
-  pressedCls: React.PropTypes.string,
-  tpl: React.PropTypes.string
+  itemConfig: React.PropTypes.objecta
 };
 
 export default ReactList;
