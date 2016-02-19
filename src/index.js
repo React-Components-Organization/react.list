@@ -216,21 +216,24 @@ class ReactList extends React.Component {
    * @param  {String} suffix Optional suffix to append to each class.
    */
   removeCls (cls = void 0, prefix = '', suffix = '') {
-    let oldCls = this.getCls(),
-        newCls = (oldCls) ? oldCls.split(' ') : [],
+    const me = this;
+    const oldCls = me.getCls();
+    let newCls = (oldCls) ? oldCls.split(' ') : [],
         ln, i;
 
       if (typeof cls == 'string') {
         const index = newCls.indexOf(prefix + cls + suffix);
-        newCls = newCls.splice(index, 1);
+        newCls.splice(index, 1);
       } else {
         ln = cls.length;
         for (i = 0; i < ln; i++) {
-          newCls = newCls.splice(i, 1);
+          if(cls[i] === newCls[i]) {
+            newCls.splice(i, 1);
+          }
         }
       }
 
-      this.setCls(newCls);
+      me.setCls(newCls);
   }
 
   /**
