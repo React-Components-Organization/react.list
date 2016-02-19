@@ -68,14 +68,19 @@ class App extends React.Component {
     const ItemTpl = (props) => {
       const { name, age } = props;
       return (
-        <div className='inner-list' style={config}>
+        <div className='inner-list' style={CStyle}>
           <div style={style}>{name}</div>
           <div style={style}>{age}</div>
         </div>
       );
     };
 
-    <ReactList ref={'ReactCompList'} data={data} cls={'malist'} itemCls={'my-item'}>
+    <ReactList 
+      ref={'ReactCompList'} 
+      data={data} 
+      cls={'malist'} 
+      itemCls={'my-item'} 
+      height={300}>
       <ItemTpl dataSet={'test'} onTapItem={this.onTapItem} />
     </ReactList>
   }
