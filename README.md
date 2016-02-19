@@ -19,7 +19,7 @@ A basic usage of ReactVideo and how to call public methods available through thi
 
 ```js
 import React from 'react';
-import ReactVideo from 'react.list';
+import ReactList from 'react.list';
 
 class App extends React.Component {
 
