@@ -19,7 +19,7 @@ class ReactList extends React.Component {
     this.state = {
       data: [],
       focused: null
-    }
+    };
   }
 
   componentDidMount () {

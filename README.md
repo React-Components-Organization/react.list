@@ -146,7 +146,14 @@ class App extends React.Component {
 >**NOTE:** The config object to apply to items within the list.
 
 ```js
-  <ReactList itemCls={'my-item'} />
+  const configObj = {
+    backgroundColor: red,
+    height: 100,
+    width: 100,
+    position: 'relative'
+  };
+
+  <ReactList itemConfig={configObj} />
 ```
 
 ### Api
