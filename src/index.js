@@ -218,7 +218,7 @@ class ReactList extends React.Component {
   removeCls (cls = void 0, prefix = '', suffix = '') {
     const me = this;
     const oldCls = me.getCls();
-    let newCls = (oldCls) ? oldCls.split(' ') : [],
+    let newCls = (oldCls.length !== 0) ? oldCls.split(' ') : [],
         ln, i;
 
       if (typeof cls == 'string') {
