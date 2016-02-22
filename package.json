@@ -1,10 +1,11 @@
 {
   "name": "react.list",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A React.js list component",
   "main": "index.js",
   "scripts": {
     "test": "gulp",
+    "test-mocha": "mocha test",
     "compile": "babel --presets es2015,stage-0,react -d ./ src/"
   },
   "repository": {
@@ -31,9 +32,11 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.0",
     "gulp-react": "^3.1.0",
-    "jshint": "^2.9.1"
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5"
   }
 }
