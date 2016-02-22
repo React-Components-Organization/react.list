@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/React-Components-Organization/react.list.svg?branch=master)](https://travis-ci.org/React-Components-Organization/react.list)
 [![npm version](https://badge.fury.io/js/react.list.svg)](https://badge.fury.io/js/react.list)
-[![npm](https://img.shields.io/npm/dt/express.svg)](https://www.npmjs.com/package/react.list)
+[![npm](https://img.shields.io/npm/dt/react.list.svg)](https://www.npmjs.com/package/react.list)
 
 A flexible and reusable react component, build with ES2015.
 
