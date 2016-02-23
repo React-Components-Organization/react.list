@@ -41,7 +41,7 @@ class ReactList extends React.Component {
   addCls (cls = void 0, prefix = '', suffix = '') {
     const me = this;
     const oldCls = me.getCls();
-    let newCls = (oldCls) ? oldCls.split(' ') : [];
+    let newCls = (oldCls.length !== 0) ? oldCls.split(' ') : [];
     let ln;
     let cache;
 
@@ -221,7 +221,7 @@ class ReactList extends React.Component {
     let newCls = (oldCls.length !== 0) ? oldCls.split(' ') : [],
         ln, i;
 
-      if (typeof cls == 'string') {
+      if (typeof cls === 'string') {
         const index = newCls.indexOf(prefix + cls + suffix);
         newCls.splice(index, 1);
       } else {
