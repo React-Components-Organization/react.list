@@ -17,18 +17,10 @@ export default class ReactList extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      data: [],
+      data: props.data,
+      kls: props.cls,
       focused: null
     };
-  }
-
-  componentDidMount () {
-    const { data, cls } = this.props;
-
-    this.setState({
-      data: data,
-      kls: cls
-    });
   }
 
   /**
@@ -72,7 +64,6 @@ export default class ReactList extends React.Component {
    */
   getAt (index = 0) {
     if (typeof index != 'number') {
-      console.warn(`Invalid index of ${index} must be a valid number`);
       return false;
     }
 
@@ -147,11 +138,9 @@ export default class ReactList extends React.Component {
    */
   insert (index = 0, item = {}) {
     const me = this;
-    const i = void 0;
     const array = me.state.data;
 
     if (typeof index != 'number') {
-      console.warn(`Invalid index of ${index} must be a valid number`);
       return false;
     }
 
@@ -167,7 +156,7 @@ export default class ReactList extends React.Component {
    * @param  {String} reactId The React id of the item.
    * @param  {Object} e The native event object.
    */
-  onItemTap (dataItem, index, touchEvent, reactId, e) {
+  onItemTap (dataItem, index) {
     this.setState({focused: index});
   }
 
@@ -180,6 +169,7 @@ export default class ReactList extends React.Component {
    * @param  {[type]} e
    */
   onItemTapEnd (dataItem, index, touchEvent, reactId, e) {
+    
     this.props.children.props.onTapItem(dataItem, index, touchEvent, reactId, e);
     this.setState({focused: index});
   }
@@ -199,7 +189,6 @@ export default class ReactList extends React.Component {
    */
   removeAt (index = 0) {
     if (typeof index != 'number') {
-      console.warn(`Invalid index of ${index} must be a valid number`);
       return false;
     }
 
@@ -219,22 +208,23 @@ export default class ReactList extends React.Component {
   removeCls (cls = void 0, prefix = '', suffix = '') {
     const me = this;
     const oldCls = me.getCls();
-    let newCls = (oldCls.length !== 0) ? oldCls.split(' ') : [],
-        ln, i;
+    let newCls = (oldCls.length !== 0) ? oldCls.split(' ') : [];
+    let ln = null;
+    let i;
 
-      if (typeof cls === 'string') {
-        const index = newCls.indexOf(prefix + cls + suffix);
-        newCls.splice(index, 1);
-      } else {
-        ln = cls.length;
-        for (i = 0; i < ln; i++) {
-          if(cls[i] === newCls[i]) {
-            newCls.splice(i, 1);
-          }
+    if (typeof cls === 'string') {
+      const index = newCls.indexOf(prefix + cls + suffix);
+      newCls.splice(index, 1);
+    } else {
+      ln = cls.length;
+      for (i = 0; i < ln; i++) {
+        if(cls[i] === newCls[i]) {
+          newCls.splice(i, 1);
         }
       }
+    }
 
-      me.setCls(newCls);
+    me.setCls(newCls);
   }
 
   /**
@@ -245,7 +235,6 @@ export default class ReactList extends React.Component {
     const me = this;
 
     if (cls === void 0) {
-      console.log('cls must have be a string value');
       return false;
     }
 
@@ -274,7 +263,6 @@ export default class ReactList extends React.Component {
    */
   setHeight (height) {
     if (typeof height != 'number') {
-      console.warn(`Invalid height of ${height} must be a valid number`);
       return false;
     }
 
@@ -283,7 +271,7 @@ export default class ReactList extends React.Component {
   }
 
   render () {
-    const { baseCls, itemCls, itemTpl, config, itemConfig, children } = this.props;
+    const { itemCls, config, itemConfig, children } = this.props;
 
     return (
       <div ref={'ReactList'} className={this.getCls()} style={config}>
@@ -319,6 +307,7 @@ ReactList.defaultProps = {
 };
 
 ReactList.propTypes = {
+  children: React.PropTypes.element,
   cls: React.PropTypes.string,
   config: React.PropTypes.object,
   data: React.PropTypes.array,
