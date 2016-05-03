@@ -12,7 +12,7 @@
 
 import React from 'react';
 
-class ReactList extends React.Component {
+export default class ReactList extends React.Component {
 
   constructor (props) {
     super(props);
@@ -45,13 +45,13 @@ class ReactList extends React.Component {
     let ln;
     let cache;
 
-    if(typeof cls === 'string') {
+    if (typeof cls === 'string') {
       cls = [cls];
     }
 
     ln = cls.length;
 
-    if(!newCls.length && prefix === '' && suffix === '') {
+    if (!newCls.length && prefix === '' && suffix === '') {
       newCls = cls;
     } else {
       for(let i = 0; i < ln; ++i) {
@@ -71,7 +71,7 @@ class ReactList extends React.Component {
    * @return {Object} object The data object.
    */
   getAt (index = 0) {
-    if(typeof index != 'number') {
+    if (typeof index != 'number') {
       console.warn(`Invalid index of ${index} must be a valid number`);
       return false;
     }
@@ -84,7 +84,7 @@ class ReactList extends React.Component {
    * @return {String} classes Return the classes applied to the list.
    */
   getCls () {
-    if(this.props.cls === null || this.props.cls.length === 0) {
+    if (this.props.cls === null || this.props.cls.length === 0) {
       return `list`;
     } else {
       return this.state.kls;
@@ -150,7 +150,7 @@ class ReactList extends React.Component {
     const i = void 0;
     const array = me.state.data;
 
-    if(typeof index != 'number') {
+    if (typeof index != 'number') {
       console.warn(`Invalid index of ${index} must be a valid number`);
       return false;
     }
@@ -173,12 +173,11 @@ class ReactList extends React.Component {
 
   /**
    * [onItemTapEnd description]
-   * @param  {[type]} dataItem   [description]
-   * @param  {[type]} index      [description]
-   * @param  {[type]} touchEvent [description]
-   * @param  {[type]} reactId    [description]
-   * @param  {[type]} e          [description]
-   * @return {[type]}            [description]
+   * @param  {[type]} dataItem
+   * @param  {[type]} index
+   * @param  {[type]} touchEvent
+   * @param  {[type]} reactId
+   * @param  {[type]} e
    */
   onItemTapEnd (dataItem, index, touchEvent, reactId, e) {
     this.props.children.props.onTapItem(dataItem, index, touchEvent, reactId, e);
@@ -186,10 +185,12 @@ class ReactList extends React.Component {
   }
 
   /**
-   * [removeAll description]
+   * removeAll
    */
   removeAll () {
-    this.setState({data: []});
+    this.setState({
+      data: []
+    });
   }
 
   /**
@@ -197,7 +198,7 @@ class ReactList extends React.Component {
    * @param  {Number} index The index of the Component to remove.
    */
   removeAt (index = 0) {
-    if(typeof index != 'number') {
+    if (typeof index != 'number') {
       console.warn(`Invalid index of ${index} must be a valid number`);
       return false;
     }
@@ -243,7 +244,7 @@ class ReactList extends React.Component {
   setCls (cls = '') {
     const me = this;
 
-    if(cls === void 0) {
+    if (cls === void 0) {
       console.log('cls must have be a string value');
       return false;
     }
@@ -272,7 +273,7 @@ class ReactList extends React.Component {
    * @param {Number} height The new value.
    */
   setHeight (height) {
-    if(typeof height != 'number') {
+    if (typeof height != 'number') {
       console.warn(`Invalid height of ${height} must be a valid number`);
       return false;
     }
@@ -289,8 +290,7 @@ class ReactList extends React.Component {
         {
           this.state.data.map((item, i) => {
             return (
-              <div className={itemCls} key={i} style={itemConfig}
-                onClick={this.onItemTapEnd.bind(this, item, i)}>
+              <div className={itemCls} key={i} style={itemConfig} onClick={this.onItemTapEnd.bind(this, item, i)}>
                 {
                   React.Children.map(children, (child) => {
                     return React.cloneElement(child, item);
@@ -303,19 +303,19 @@ class ReactList extends React.Component {
       </div>
     );
   }
-};
+}
 
 ReactList.defaultProps = {
-    cls: null,
-    config: {},
-    data: null,
-    height: null,
-    width: null,
-    itemCls: '',
-    itemConfig: {
-      height: 60,
-      borderBottom: '1px solid black'
-    }
+  cls: null,
+  config: {},
+  data: null,
+  height: null,
+  width: null,
+  itemCls: '',
+  itemConfig: {
+    height: 60,
+    borderBottom: '1px solid black'
+  }
 };
 
 ReactList.propTypes = {
@@ -333,5 +333,3 @@ ReactList.propTypes = {
   itemCls: React.PropTypes.string,
   itemConfig: React.PropTypes.objecta
 };
-
-export default ReactList;
